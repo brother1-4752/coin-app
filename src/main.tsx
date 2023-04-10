@@ -7,3 +7,17 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <App />
   </React.StrictMode>
 );
+
+const ReactRouterObject = createBrowserRouter(
+  RouterInfo.map((routerInfo) => {
+    return routerInfo.withAuthorization
+      ? {
+          path: routerInfo.path,
+          element: <Authorization>{routerInfo.element}</Authorization>,
+        }
+      : {
+          path: routerInfo.path,
+          element: routerInfo.element,
+        };
+  })
+);

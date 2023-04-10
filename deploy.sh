@@ -1,15 +1,13 @@
 #!/bin/bash
 
-npm run build
-
-npx vite build --base /coin-app/
+set -e
 
 cd dist
 
 git init
+git add -A
+git commit -m 'deploy'
 
-git add .
+git push -f git@github.com:brother1-4752/coin-app.git master:gh-pages
 
-git commit -m "배포 : 깃허브페이지"
-
-git push --force "git@github.com:brother1-4752/coin-app.git" master:gh-pages
+cd -
