@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { RouterInfo } from "./router";
+import Authorization from "./components/Authorization";
+import { createBrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -9,15 +12,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 );
 
 const ReactRouterObject = createBrowserRouter(
-  RouterInfo.map((routerInfo) => {
-    return routerInfo.withAuthorization
+  RouterInfo.map((router) => {
+    return router.withAuth
       ? {
-          path: routerInfo.path,
-          element: <Authorization>{routerInfo.element}</Authorization>,
+          path: router.path,
+          element: <Authorization>{router.element}</Authorization>,
         }
       : {
-          path: routerInfo.path,
-          element: routerInfo.element,
+          path: router.path,
+          element: router.element,
         };
   })
 );
