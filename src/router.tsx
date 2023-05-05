@@ -1,19 +1,34 @@
+import ErrorPage from "./ErrorPage";
 import Home from "./routes/Home";
+import { createBrowserRouter } from "react-router-dom";
 
-export interface IRouter {
-  id: number;
+interface IRouter {
+  id?: number;
   path: string;
-  label: string;
   element: React.ReactNode;
-  withAuth?: boolean;
+  errorElement?: React.ReactNode;
 }
 
-export const RouterInfo: IRouter[] = [
+const RouterData: IRouter[] = [
   {
     id: 0,
     path: "/",
-    label: "HOME",
     element: <Home />,
-    withAuth: true,
+    errorElement: <ErrorPage />,
+  },
+  {
+    id: 1,
+    path: "/:coinId/chart",
+    element: "<div>코인</div>",
+    errorElement: <ErrorPage />,
   },
 ];
+
+export const router = createBrowserRouter(
+  RouterData.map((routerInfo) => {
+    return {
+      path: routerInfo.path,
+      element: routerInfo.element,
+    };
+  })
+);
