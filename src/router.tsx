@@ -1,12 +1,14 @@
 import ErrorPage from "./ErrorPage";
+import Coin from "./routes/Coin";
 import Home from "./routes/Home";
-import { createBrowserRouter } from "react-router-dom";
+import { RouteObject, createBrowserRouter } from "react-router-dom";
 
 interface IRouter {
   id?: number;
   path: string;
   element: React.ReactNode;
   errorElement?: React.ReactNode;
+  children?: IRouter[];
 }
 
 const RouterData: IRouter[] = [
@@ -18,8 +20,8 @@ const RouterData: IRouter[] = [
   },
   {
     id: 1,
-    path: "/:coinId/chart",
-    element: "<div>코인</div>",
+    path: `/:coinId`,
+    element: <Coin />,
     errorElement: <ErrorPage />,
   },
 ];

@@ -3,35 +3,15 @@ import { lightTheme, darkTheme } from "./theme";
 import GlobalStyle from "./GlobalStyle";
 import { router } from "./Router";
 import { RouterProvider } from "react-router-dom";
-
-// export interface IRouter {
-//   id: number;
-//   path: string;
-//   label: string;
-//   element: React.ReactNode;
-// }
-
-// export const RouterInfo: IRouter[] = [
-//   {
-//     id: 0,
-//     path: "/",
-//     label: "HOME",
-//     element: <Home />,
-//   },
-// ];
-
-// const router = createBrowserRouter(
-//   RouterInfo.map((router) => {
-//     return {
-//       path: router.path,
-//       element: router.element,
-//     };
-//   })
-// );
+import { useRecoilValue } from "recoil";
+import { darkModeState } from "./atoms";
+import DarkMode from "./components/DarkMode";
 
 export default function App() {
+  const isDark = useRecoilValue(darkModeState);
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <DarkMode />
       <GlobalStyle />
       <RouterProvider router={router} />
     </ThemeProvider>
