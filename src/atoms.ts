@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export interface ICoinDetail {
+interface ICoinDetail {
   id: string;
   name: string;
   symbol: string;
@@ -27,7 +27,7 @@ export const darkModeState = atom({
   default: false,
 });
 
-export const coinDetailState = atom<ICoinDetail>({
+export const coinDetailState = atom<ICoinDetail[]>({
   key: "coinDetail",
-  default: undefined,
+  default: [],
 });

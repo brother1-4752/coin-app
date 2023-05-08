@@ -1,7 +1,9 @@
 import ErrorPage from "./ErrorPage";
+import Chart from "./routes/Chart";
 import Coin from "./routes/Coin";
 import Home from "./routes/Home";
-import { RouteObject, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
+import Price from "./routes/Price";
 
 interface IRouter {
   id?: number;
@@ -23,6 +25,18 @@ const RouterData: IRouter[] = [
     path: `/:coinId`,
     element: <Coin />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        id: 2,
+        path: "chart",
+        element: <Chart />,
+      },
+      {
+        id: 3,
+        path: "price",
+        element: <Price />,
+      },
+    ],
   },
 ];
 
