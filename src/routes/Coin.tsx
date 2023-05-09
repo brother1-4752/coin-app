@@ -1,5 +1,12 @@
 import { useEffect } from "react";
-import { Routes, Route, Link, useParams } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Link,
+  useParams,
+  Outlet,
+  useMatch,
+} from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { coinDetailState } from "../atoms";
@@ -75,6 +82,8 @@ const CoinDescription = styled.section`
 function Coin() {
   const { coinId } = useParams();
   const [coinDetail, setCoinDetail] = useRecoilState(coinDetailState);
+  const priceMatch = useMatch;
+
   useEffect(() => {
     (async () => {
       const response = await fetch(
@@ -82,9 +91,9 @@ function Coin() {
       );
       const json = await response.json();
       setCoinDetail(() => [json]);
-      console.dir(coinDetail);
     })();
   }, [coinId]);
+  console.log(coinId);
   return (
     <>
       <CoinWrapper>
@@ -111,14 +120,34 @@ function Coin() {
             </CoinDescription>
           </CoinDetail>
         ))}
+        <Link to={`/${coinId}/chart`}>Charttt</Link>
+        <Link to={`/${coinId}/price`}>Priceee</Link>
       </CoinWrapper>
-      <Link to={`/${coinId}/chart`}>d</Link>
+
       <Routes>
-        <Route path={`/${coinId}/chart`} element={<Chart />} />
-        <Route path={`/${coinId}/price`} element={<Price />} />
+        <Route path={`/:coinId/chart`}>
+          <Chart />
+        </Route>
+        <Route path={`/:coinId/price`}>
+          <Price />
+        </Route>
       </Routes>
     </>
   );
 }
 
 export default Coin;
+
+// function App() {
+//   return (
+//     <Routes>
+//       <Route path="/" element={<Dashboard />}>
+//         <Route
+//           path="messages"
+//           element={<DashboardMessages />}
+//         />
+//         <Route path="tasks" element={<DashboardTasks />} />
+//       </Route>
+//     </Routes>
+//   );
+// }

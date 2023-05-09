@@ -1,9 +1,10 @@
-import ErrorPage from "./ErrorPage";
-import Chart from "./routes/Chart";
+// import ErrorBoundary from "./ErrorBoundary";
 import Coin from "./routes/Coin";
 import Home from "./routes/Home";
 import { createBrowserRouter } from "react-router-dom";
 import Price from "./routes/Price";
+import ErrorBoundary from "./ErrorBoundary";
+import Chart from "./routes/Chart";
 
 interface IRouter {
   id?: number;
@@ -18,23 +19,25 @@ const RouterData: IRouter[] = [
     id: 0,
     path: "/",
     element: <Home />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorBoundary />,
   },
   {
     id: 1,
-    path: `/:coinId`,
+    path: `:coinId`,
     element: <Coin />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         id: 2,
         path: "chart",
         element: <Chart />,
+        errorElement: <ErrorBoundary />,
       },
       {
         id: 3,
         path: "price",
         element: <Price />,
+        errorElement: <ErrorBoundary />,
       },
     ],
   },
@@ -42,9 +45,11 @@ const RouterData: IRouter[] = [
 
 export const router = createBrowserRouter(
   RouterData.map((routerInfo) => {
+    console.dir(routerInfo);
     return {
       path: routerInfo.path,
       element: routerInfo.element,
+      errorElement: routerInfo.errorElement,
     };
   })
 );
