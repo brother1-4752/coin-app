@@ -1,12 +1,5 @@
 import { useEffect } from "react";
-import {
-  Routes,
-  Route,
-  Link,
-  useParams,
-  Outlet,
-  useMatch,
-} from "react-router-dom";
+import { Routes, Route, Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { coinDetailState } from "../atoms";
@@ -63,7 +56,9 @@ const CoinDetail = styled.section`
 
 const CoinLogo = styled.img`
   &:hover {
-    //코인 회전하는 애니메이션
+    -webkit-animation: rotate-in-center 0.6s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: rotate-in-center 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
 `;
 
@@ -82,7 +77,6 @@ const CoinDescription = styled.section`
 function Coin() {
   const { coinId } = useParams();
   const [coinDetail, setCoinDetail] = useRecoilState(coinDetailState);
-  const priceMatch = useMatch;
 
   useEffect(() => {
     (async () => {
@@ -122,32 +116,14 @@ function Coin() {
         ))}
         <Link to={`/${coinId}/chart`}>Charttt</Link>
         <Link to={`/${coinId}/price`}>Priceee</Link>
-      </CoinWrapper>
 
-      <Routes>
-        <Route path={`/:coinId/chart`}>
-          <Chart />
-        </Route>
-        <Route path={`/:coinId/price`}>
-          <Price />
-        </Route>
-      </Routes>
+        <Routes>
+          <Route path={`chart`} element={<Chart />} />
+          <Route path={`price`} element={<Price />} />
+        </Routes>
+      </CoinWrapper>
     </>
   );
 }
 
 export default Coin;
-
-// function App() {
-//   return (
-//     <Routes>
-//       <Route path="/" element={<Dashboard />}>
-//         <Route
-//           path="messages"
-//           element={<DashboardMessages />}
-//         />
-//         <Route path="tasks" element={<DashboardTasks />} />
-//       </Route>
-//     </Routes>
-//   );
-// }

@@ -1,7 +1,11 @@
 // import ErrorBoundary from "./ErrorBoundary";
 import Coin from "./routes/Coin";
 import Home from "./routes/Home";
-import { createBrowserRouter } from "react-router-dom";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 import Price from "./routes/Price";
 import ErrorBoundary from "./ErrorBoundary";
 import Chart from "./routes/Chart";
@@ -23,7 +27,7 @@ const RouterData: IRouter[] = [
   },
   {
     id: 1,
-    path: `:coinId`,
+    path: ":coinId/*",
     element: <Coin />,
     errorElement: <ErrorBoundary />,
     children: [
