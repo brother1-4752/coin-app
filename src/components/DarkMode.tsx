@@ -46,8 +46,14 @@ const DarkPointer = styled.div`
 
 function DarkMode() {
   const [isDark, setIsDark] = useRecoilState(darkModeState);
+  let timer: any;
   const handleDarkMode = () => {
-    setIsDark((prev) => !prev);
+    if (!timer) {
+      timer = setTimeout(() => {
+        timer = null;
+        setIsDark((prev) => !prev);
+      }, 200);
+    }
   };
   return (
     <DarkWrapper>
