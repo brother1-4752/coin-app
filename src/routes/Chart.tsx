@@ -20,8 +20,14 @@ export default function Chart() {
     queryKey: ["ohlcv", coinId],
     queryFn: () => fetchCoinHistory(coinId),
   });
+  const exceptData = data ?? [];
+  const chartData = exceptData?.map((i) => {
+    return {
+      x: i.time_close,
+      y: [new Date(i.time_open).getTime(), i.open, i.high, i.low, i.close],
+    };
+  });
 
-  // console.log(data);
   return (
     <div>
       {isLoading ? (
@@ -32,13 +38,7 @@ export default function Chart() {
           series={[
             {
               name: "Chart",
-              data: data?.map((price) => [
-                new Date(price.time_open).getTime(),
-                price.open,
-                price.high,
-                price.low,
-                price.close,
-              ]),
+              data: chartData,
             },
           ]}
           options={{
