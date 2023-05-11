@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface ICoinDetail {
+export interface ICoinDetail {
   id: string;
   name: string;
   symbol: string;

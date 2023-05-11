@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCoins } from "../api";
 
 const HomeWrapper = styled.div`
   width: 600px;
@@ -36,16 +38,25 @@ interface ICoin {
 }
 
 export default function Home() {
-  const [coins, setCoins] = useState<ICoin[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("https://api.coinpaprika.com/v1/coins");
-      const json = await response.json();
-      setCoins(json.slice(0, 50));
-      setIsLoading(false);
-    })();
-  }, []);
+  // api 호출에 따른 coin 데이터와 loading 상태, 변화 감지에 따른 리렌더링까지
+  // react-query가 모두 커버
+
+  // const [coins, setCoins] = useState<ICoin[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
+  //     const json = await response.json();
+  //     setCoins(json.slice(0, 50));
+  //     setIsLoading(false);
+  //   })();
+  // }, []);
+
+  //react-query
+  const { isLoading, isError, error, data } = useQuery<ICoin[], Error>({
+    queryKey: ["allCoins"],
+    queryFn: fetchCoins,
+  });
 
   return (
     <>
@@ -55,7 +66,7 @@ export default function Home() {
         <HomeWrapper>
           <HomeTitle>🔵코인 랭킹🔵</HomeTitle>
           <CoinList>
-            {coins.map((coin) => (
+            {data?.slice(0, 30)?.map((coin) => (
               <CoinListItem key={coin.rank}>
                 <div>
                   {coin.rank}등 : {coin.name} &rarr;

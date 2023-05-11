@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
-import { coinDetailState } from "../atoms";
 import Chart from "./Chart";
 import Price from "./Price";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { useQuery } from "@tanstack/react-query";
+import { ICoinDetail } from "../atoms";
 
 const CoinWrapper = styled.div`
   margin-top: 30px;
@@ -75,53 +75,59 @@ const CoinDescription = styled.section`
 `;
 
 function Coin() {
-  const { coinId } = useParams();
-  const [coinDetail, setCoinDetail] = useRecoilState(coinDetailState);
+  const { coinId } = useParams() as { coinId: string };
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(
-        `https://api.coinpaprika.com/v1/coins/${coinId}`
-      );
-      const json = await response.json();
-      setCoinDetail(() => [json]);
-    })();
-  }, [coinId]);
-  console.log(coinId);
+  const {
+    isLoading,
+    isError,
+    error,
+    isSuccess,
+    data: coinInfo,
+  } = useQuery<ICoinDetail, Error>({
+    queryKey: ["info", coinId],
+    queryFn: () => fetchCoinInfo(coinId),
+  });
+
   return (
     <>
-      <CoinWrapper>
-        <CoinHeader>
-          <HomeLink className="" to="/">
-            ◀Home
-          </HomeLink>
-          <CoinTitle>{coinDetail[0]?.name}</CoinTitle>
-        </CoinHeader>
-        {coinDetail?.map((coin) => (
-          <CoinDetail key={coin?.id}>
-            <CoinLogo
-              src={coin.logo}
-              style={{ width: "100px", height: "100px", marginRight: "30px" }}
-            />
-            <CoinDescription>
-              <h1>🚩랭킹 : {coin.rank}</h1>
-              <h3>💥코인명 : {coin.name}</h3>
-              <p>
-                💭 코인 설명
-                <br />
-                <div>{coin.description}</div>
-              </p>
-            </CoinDescription>
-          </CoinDetail>
-        ))}
-        <Link to={`/${coinId}/chart`}>Charttt</Link>
-        <Link to={`/${coinId}/price`}>Priceee</Link>
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <CoinWrapper>
+          <CoinHeader>
+            <HomeLink className="" to="/">
+              ◀Home
+            </HomeLink>
+            <CoinTitle>{coinId}</CoinTitle>
+          </CoinHeader>
 
-        <Routes>
-          <Route path={`chart`} element={<Chart />} />
-          <Route path={`price`} element={<Price />} />
-        </Routes>
-      </CoinWrapper>
+          {isSuccess ? (
+            <CoinDetail key={coinInfo?.id}>
+              <CoinLogo
+                src={coinInfo?.logo}
+                style={{ width: "100px", height: "100px", marginRight: "30px" }}
+              />
+              <CoinDescription>
+                <h1>🚩랭킹 : {coinInfo?.rank}</h1>
+                <h3>💥코인명 : {coinInfo?.name}</h3>
+                <div>
+                  💭 코인 설명
+                  <br />
+                  <div>{coinInfo?.description}</div>
+                </div>
+              </CoinDescription>
+            </CoinDetail>
+          ) : null}
+
+          <Link to={`/${coinId}/chart`}>Charttt</Link>
+          <Link to={`/${coinId}/price`}>Priceee</Link>
+
+          <Routes>
+            <Route path={`chart`} element={<Chart />} />
+            <Route path={`price`} element={<Price />} />
+          </Routes>
+        </CoinWrapper>
+      )}
     </>
   );
 }

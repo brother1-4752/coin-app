@@ -38,28 +38,23 @@ const DarkPointer = styled.div`
   right: 3px;
   top: 3px;
   z-index: -100;
-  ${(props: { mode: boolean }) =>
-    props.mode
+  ${(props: { pointerMode: boolean }) =>
+    props.pointerMode
       ? "animation: slide-left 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;"
       : "animation: slide-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; left:3px;"}
 `;
 
 function DarkMode() {
   const [isDark, setIsDark] = useRecoilState(darkModeState);
-  let timer: any;
+  // let timer: any;
   const handleDarkMode = () => {
-    if (!timer) {
-      timer = setTimeout(() => {
-        timer = null;
-        setIsDark((prev) => !prev);
-      }, 200);
-    }
+    setIsDark((prev) => !prev);
   };
   return (
     <DarkWrapper>
       <DarkModeIcon onClick={handleDarkMode}>🌞</DarkModeIcon>
       <LightModeIcon onClick={handleDarkMode}>🌙</LightModeIcon>
-      <DarkPointer mode={isDark}></DarkPointer>
+      <DarkPointer pointerMode={isDark}></DarkPointer>
     </DarkWrapper>
   );
 }
