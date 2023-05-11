@@ -1,10 +1,10 @@
-import { Routes, Route, Link, useParams } from "react-router-dom";
+import { Routes, Route, Link, useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import { useQuery } from "@tanstack/react-query";
-import { ICoinDetail } from "../atoms";
+import { ICoinDetail, PriceData } from "../atoms";
 
 const CoinWrapper = styled.div`
   margin-top: 30px;
@@ -69,28 +69,62 @@ const CoinDescription = styled.section`
   }
   div {
     margin-top: 10px;
-    text-decoration: underline;
+    /* text-decoration: underline; */
     line-height: 1.2;
+  }
+`;
+
+const TapBox = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+const Tap = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 60px;
+  font-size: 24px;
+  color: ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.accecntColor};
+  border-radius: 8px;
+
+  &:hover {
+    color: ${(props) => props.theme.bgColor};
   }
 `;
 
 function Coin() {
   const { coinId } = useParams() as { coinId: string };
-
   const {
-    isLoading,
-    isError,
-    error,
-    isSuccess,
+    isLoading: infoLoading,
+    isSuccess: infoSuccess,
+    error: infoError,
     data: coinInfo,
   } = useQuery<ICoinDetail, Error>({
     queryKey: ["info", coinId],
     queryFn: () => fetchCoinInfo(coinId),
   });
 
+  const {
+    isLoading: tickerLoading,
+    isSuccess: tickerSuccess,
+    error: tickerError,
+    data: tickerInfo,
+  } = useQuery<PriceData, Error>({
+    queryKey: ["tickers", coinId],
+    queryFn: () => fetchCoinTickers(coinId),
+  });
+
+  // console.log(tickerInfo);
+  // console.log(coinInfo);
+
+  const loading = infoLoading || tickerLoading;
+
   return (
     <>
-      {isLoading ? (
+      {loading ? (
         "Loading..."
       ) : (
         <CoinWrapper>
@@ -98,10 +132,10 @@ function Coin() {
             <HomeLink className="" to="/">
               ◀Home
             </HomeLink>
-            <CoinTitle>{coinId}</CoinTitle>
+            <CoinTitle>{coinInfo?.name}</CoinTitle>
           </CoinHeader>
 
-          {isSuccess ? (
+          {infoSuccess ? (
             <CoinDetail key={coinInfo?.id}>
               <CoinLogo
                 src={coinInfo?.logo}
@@ -118,9 +152,10 @@ function Coin() {
               </CoinDescription>
             </CoinDetail>
           ) : null}
-
-          <Link to={`/${coinId}/chart`}>Charttt</Link>
-          <Link to={`/${coinId}/price`}>Priceee</Link>
+          <TapBox>
+            <Tap to={`/${coinId}/chart`}>Chart</Tap>
+            <Tap to={`/${coinId}/price`}>Price</Tap>
+          </TapBox>
 
           <Routes>
             <Route path={`chart`} element={<Chart />} />
