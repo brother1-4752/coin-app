@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ICoinDetail, PriceData } from "../atoms";
 
 const CoinWrapper = styled.div`
-  margin-top: 30px;
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
   width: 650px;
@@ -69,7 +69,6 @@ const CoinDescription = styled.section`
   }
   div {
     margin-top: 10px;
-    /* text-decoration: underline; */
     line-height: 1.2;
   }
 `;

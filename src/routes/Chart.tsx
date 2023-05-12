@@ -24,7 +24,7 @@ export default function Chart() {
   const chartData = exceptData?.map((i) => {
     return {
       x: i.time_close,
-      y: [new Date(i.time_open).getTime(), i.open, i.high, i.low, i.close],
+      y: [i.open, i.high, i.low, i.close],
     };
   });
 
@@ -37,7 +37,6 @@ export default function Chart() {
           type="candlestick"
           series={[
             {
-              name: "Chart",
               data: chartData,
             },
           ]}

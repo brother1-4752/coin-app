@@ -7,13 +7,21 @@ import styled from "styled-components";
 const PriceWrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
-  width: 500px;
+  justify-content: center;
+  width: 100%;
 `;
 const PriceBox = styled.div`
-  width: 200px;
-  height: 60px;
-  background-color: rgba(0, 0, 0, 0.75);
+  width: 40%;
+  margin: 15px 10px;
+  box-shadow: 0 2px 5px 1px rgba(64, 60, 67, 0.16);
   border-radius: 15px;
+  line-height: 50px;
+  text-align: center;
+`;
+
+const PriceHeader = styled.h1`
+  width: 100%;
+  box-shadow: 0 2px 5px 1px rgba(64, 60, 67, 0.16);
 `;
 
 export default function Price() {
@@ -30,31 +38,31 @@ export default function Price() {
       ) : (
         <PriceWrapper>
           <PriceBox>
-            <h1>Market Cap</h1>
+            <PriceHeader>Market Cap</PriceHeader>
             <p>{data?.quotes.USD.market_cap}</p>
           </PriceBox>
           <PriceBox>
-            <h1>현재 가격(USD | KRW)</h1>
+            <PriceHeader>현재 가격(USD | KRW)</PriceHeader>
             <p>
               {data && data.quotes.USD.price.toFixed(0)}USD
-              <br />
+              <hr />
               {data && (data.quotes.USD.price * 1330).toFixed(0)}KRW
             </p>
           </PriceBox>
           <PriceBox>
-            <h1>1시간 동안의 변화</h1>
+            <PriceHeader>1시간 동안의 변화</PriceHeader>
             <p>{data?.quotes.USD.percent_change_1h}%</p>
           </PriceBox>
           <PriceBox>
-            <h1>6시간 동안의 변화</h1>
+            <PriceHeader>6시간 동안의 변화</PriceHeader>
             <p>{data?.quotes.USD.percent_change_6h}%</p>
           </PriceBox>
           <PriceBox>
-            <h1>12시간 동안의 변화</h1>
+            <PriceHeader>12시간 동안의 변화</PriceHeader>
             <p>{data?.quotes.USD.percent_change_12h}%</p>
           </PriceBox>
           <PriceBox>
-            <h1>24시간 동안의 변화</h1>
+            <PriceHeader>24시간 동안의 변화</PriceHeader>
             <p>{data?.quotes.USD.percent_change_24h}%</p>
           </PriceBox>
         </PriceWrapper>
