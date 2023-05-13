@@ -55,5 +55,8 @@ export const router = createBrowserRouter(
       element: routerInfo.element,
       errorElement: routerInfo.errorElement,
     };
-  })
+  }),
+  {
+    basename: "/coin-app/",
+  }
 );
