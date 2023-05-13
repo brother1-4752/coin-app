@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 const PriceWrapper = styled.section`
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
 `;
 const PriceBox = styled.div`
